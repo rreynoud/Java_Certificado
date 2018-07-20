@@ -4,10 +4,6 @@ import br.com.samuelweb.certificado.exception.CertificadoException;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.bouncycastle.asn1.*;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
-import sun.security.pkcs11.wrapper.CK_C_INITIALIZE_ARGS;
-import sun.security.pkcs11.wrapper.CK_TOKEN_INFO;
-import sun.security.pkcs11.wrapper.PKCS11;
-import sun.security.pkcs11.wrapper.PKCS11Exception;
 
 import java.io.*;
 import java.security.*;
@@ -466,41 +462,41 @@ public class CertificadoService {
     }
 
     private static String getSlot(String libraryPath, String serialNumber) throws IOException, CertificadoException {
-        CK_C_INITIALIZE_ARGS initArgs = new CK_C_INITIALIZE_ARGS();
-        String functionList = "C_GetFunctionList";
-
-        initArgs.flags = 0;
-        PKCS11 tmpPKCS11;
-        long[] slotList;
+//        CK_C_INITIALIZE_ARGS initArgs = new CK_C_INITIALIZE_ARGS();
+//        String functionList = "C_GetFunctionList";
+//
+//        initArgs.flags = 0;
+//        PKCS11 tmpPKCS11;
+//        long[] slotList;
         String slotSelected = null;
-        try {
-            try {
-                tmpPKCS11 = PKCS11.getInstance(libraryPath, functionList, initArgs, false);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                throw ex;
-            }
-        } catch (PKCS11Exception e) {
-            try {
-                tmpPKCS11 = PKCS11.getInstance(libraryPath, functionList, null, true);
-            } catch (Exception ex) {
-                throw new CertificadoException("Erro ao pegar Slot A3: " + e.getMessage());
-            }
-        }
-
-        try {
-            slotList = tmpPKCS11.C_GetSlotList(true);
-
-            for (long slot : slotList) {
-                CK_TOKEN_INFO tokenInfo = tmpPKCS11.C_GetTokenInfo(slot);
-                if (serialNumber.equals(String.valueOf(tokenInfo.serialNumber))) {
-                    slotSelected = String.valueOf(slot);
-                }
-            }
-        } catch (Exception e) {
-            throw new CertificadoException("Erro Ao pegar SlotA3: " + e.getMessage());
-        }
-
+//        try {
+//            try {
+//                tmpPKCS11 = PKCS11.getInstance(libraryPath, functionList, initArgs, false);
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//                throw ex;
+//            }
+//        } catch (PKCS11Exception e) {
+//            try {
+//                tmpPKCS11 = PKCS11.getInstance(libraryPath, functionList, null, true);
+//            } catch (Exception ex) {
+//                throw new CertificadoException("Erro ao pegar Slot A3: " + e.getMessage());
+//            }
+//        }
+//
+//        try {
+//            slotList = tmpPKCS11.C_GetSlotList(true);
+//
+//            for (long slot : slotList) {
+//                CK_TOKEN_INFO tokenInfo = tmpPKCS11.C_GetTokenInfo(slot);
+//                if (serialNumber.equals(String.valueOf(tokenInfo.serialNumber))) {
+//                    slotSelected = String.valueOf(slot);
+//                }
+//            }
+//        } catch (Exception e) {
+//            throw new CertificadoException("Erro Ao pegar SlotA3: " + e.getMessage());
+//        }
+//
         return slotSelected;
     }
 
